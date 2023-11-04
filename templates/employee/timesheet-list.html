@@ -9,8 +9,10 @@
     {{ user.username }}
     {% for timesheet in timesheets %}
         <a href="{% url 'timesheet-view' timesheet.id %}">
-            {{ timesheet.date }}
-            
+            {{ timesheet.date }}  
+        </a>
+        <a href="{% url 'timesheet-delete' timesheet.id %}">
+            delete
         </a>
         {{ timesheet.duration }}
     {% endfor %}

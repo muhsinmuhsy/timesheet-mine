@@ -46,3 +46,40 @@ def timesheet_view(request, timesheet_id):
         'duration' : duration
     }
     return render(request, 'employee/timesheet-view.html', context)
+
+
+def timesheet_add(request):
+    
+    if request.method == 'POST':
+        start_time = request.POST.get('start_time')
+        end_time = request.POST.get('end_time')
+        description = request.POST.get('description')
+
+        try:
+        
+            timesheet = Timesheet(
+                employee=request.user,
+                status='Pending',
+                start_time=start_time,
+                end_time=end_time,
+                description=description
+            )
+            timesheet.save()
+            messages.success(request, 'add successfully')
+            return redirect('timesheet-list')
+        except Exception as e:
+            messages.error(request, f'faild to add, {str(e)}')
+            return redirect('timesheet-add')
+        
+    return render(request, 'employee/timesheet-add.html')
+
+def timesheet_delete(request, timesheet_id):
+    try:
+        timesheet = Timesheet.objects.get(id=timesheet_id)
+        timesheet.delete()
+        messages.success(request, 'deleted successfully')
+        return redirect('timesheet-list')
+    except:
+        messages.error(request, 'deleted faild')
+        return redirect('timesheet-list')
+    
