@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ 
+    <h1>Timesheets</h1>
+    <form method="post">
+      {% csrf_token %}
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for timesheet in timesheets %}
+            <tr>
+              <td>{{ timesheet.date }}</td>
+              <td>{{ timesheet.start_time }}</td>
+              <td>{{ timesheet.end_time }}</td>
+              <td>{{ timesheet.description }}</td>
+              <td>
+                <select name="status_{{ timesheet.id }}">
+                  <option value="Pending" {% if timesheet.status == "Pending" %}selected{% endif %}>Pending</option>
+                  <option value="Rejected" {% if timesheet.status == "Rejected" %}selected{% endif %}>Rejected</option>
+                  <option value="Approved" {% if timesheet.status == "Approved" %}selected{% endif %}>Approved</option>
+                </select>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="submit">Update Status</button>
+    </form>
+  </div>
+
+
+</body>
+</html>
